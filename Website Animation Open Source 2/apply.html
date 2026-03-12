@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <title>Apply</title>
+    <link rel='stylesheet' href='command-hub.css' />
+  </head>
+  <body>
+    <div class='page'>
+      <header class='page-header'>
+        <div>
+          <div class='site-name'></div>
+          <div class='section-name'>Apply</div>
+        </div>
+        <a class='return-link' href='Open Source Animation.html'>Return to Home</a>
+      </header>
+
+      <section id="apply" class="content-section">
+        <h2 class="page-title">Apply</h2>
+        <p class="page-desc">Send a quick pitch and portfolio to open roles.</p>
+        <div class="content-grid">
+          <div class="content-card">
+            <span>Role Select</span>
+            <small>Pick a project and choose a contribution lane.</small>
+          </div>
+          <div class="content-card">
+            <span>Availability</span>
+            <small>Share your weekly capacity and tools.</small>
+          </div>
+          <div class="content-card">
+            <span>Response</span>
+            <small>Track approvals and onboarding steps.</small>
+          </div>
+        </div>
+
+        <form class="form-panel" action="#" method="post" enctype="multipart/form-data">
+          <div class="form-grid">
+            <label class="form-field">
+              <span>Full Name</span>
+              <input type="text" name="full_name" placeholder="Your name" required />
+            </label>
+            <label class="form-field">
+              <span>Email</span>
+              <input type="email" name="email" placeholder="you@email.com" required />
+            </label>
+            <label class="form-field">
+              <span>Role</span>
+              <select name="role">
+                <option>Animator</option>
+                <option>Illustrator</option>
+                <option>Compositor</option>
+                <option>Sound</option>
+                <option>Writer</option>
+              </select>
+            </label>
+            <label class="form-field">
+              <span>Portfolio Link</span>
+              <input type="url" name="portfolio" placeholder="https://portfolio.com" />
+            </label>
+            <label class="form-field form-field--full">
+              <span>Application Notes</span>
+              <textarea name="notes" rows="4" placeholder="Tell us about your skills and availability."></textarea>
+            </label>
+            <label class="form-field form-field--full">
+              <span>Upload Samples</span>
+              <input type="file" name="samples" accept=".pdf,.png,.jpg,.jpeg,.zip" />
+              <small class="form-help">Attach reels, sample frames, or zipped project files.</small>
+            </label>
+          </div>
+          <div class="form-actions">
+            <button class="form-button" type="submit">Submit Application</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </body>
+</html>
+
+
+
+
+
+
+
+
