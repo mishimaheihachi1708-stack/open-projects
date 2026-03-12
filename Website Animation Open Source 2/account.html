@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <title>Account</title>
+    <link rel='stylesheet' href='command-hub.css' />
+  </head>
+  <body>
+    <div class='page'>
+      <header class='page-header'>
+        <div>
+          <div class='site-name'></div>
+          <div class='section-name'>Account</div>
+        </div>
+        <a class='return-link' href='Open Source Animation.html'>Return to Home</a>
+      </header>
+
+      <section id="account" class="content-section">
+        <h2 class="page-title">Account</h2>
+        <p class="page-desc">Create an account or log in to track your activity.</p>
+        <div class="content-grid">
+          <div class="content-card">
+            <span>Profile</span>
+            <small>Portfolio links and tools.</small>
+          </div>
+          <div class="content-card">
+            <span>Notifications</span>
+            <small>Stay on top of replies.</small>
+          </div>
+          <div class="content-card">
+            <span>History</span>
+            <small>Uploads and approvals.</small>
+          </div>
+        </div>
+
+        <form class="form-panel" action="#" method="post" enctype="multipart/form-data">
+          <div class="form-grid">
+            <label class="form-field">
+              <span>Display Name</span>
+              <input type="text" name="display_name" placeholder="Screen name" required />
+            </label>
+            <label class="form-field">
+              <span>Email</span>
+              <input type="email" name="email" placeholder="you@email.com" required />
+            </label>
+            <label class="form-field">
+              <span>Password</span>
+              <input type="password" name="password" placeholder="Create a password" required />
+            </label>
+            <label class="form-field">
+              <span>Discipline</span>
+              <select name="discipline">
+                <option>Animation</option>
+                <option>Illustration</option>
+                <option>Motion Design</option>
+                <option>Compositing</option>
+                <option>Sound</option>
+              </select>
+            </label>
+            <label class="form-field form-field--full">
+              <span>Bio</span>
+              <textarea name="bio" rows="3" placeholder="Short intro about your work."></textarea>
+            </label>
+            <label class="form-field form-field--full">
+              <span>Upload Avatar / ID</span>
+              <input type="file" name="avatar" accept=".png,.jpg,.jpeg,.webp,.pdf" />
+              <small class="form-help">Add a profile image or verification document.</small>
+            </label>
+          </div>
+          <div class="form-actions">
+            <button class="form-button" type="submit">Create Account</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </body>
+</html>
+
+
+
+
+
+
+
+

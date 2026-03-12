@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <title>Upload</title>
+    <link rel='stylesheet' href='command-hub.css' />
+  </head>
+  <body>
+    <div class='page'>
+      <header class='page-header'>
+        <div>
+          <div class='site-name'></div>
+          <div class='section-name'>Upload</div>
+        </div>
+        <a class='return-link' href='Open Source Animation.html'>Return to Home</a>
+      </header>
+
+      <section id="upload" class="content-section">
+        <h2 class="page-title">Upload</h2>
+        <p class="page-desc">Submit WIP renders, audio, and final deliverables.</p>
+        <div class="content-grid">
+          <div class="content-card">
+            <span>File Drop</span>
+            <small>MP4, MOV, PNG seq, WAV, ZIP.</small>
+          </div>
+          <div class="content-card">
+            <span>Versions</span>
+            <small>Tag revisions with a short changelog.</small>
+          </div>
+          <div class="content-card">
+            <span>Review</span>
+            <small>Queue deliverables for feedback.</small>
+          </div>
+        </div>
+
+        <form class="form-panel" action="#" method="post" enctype="multipart/form-data">
+          <div class="form-grid">
+            <label class="form-field">
+              <span>Project</span>
+              <input type="text" name="project" placeholder="Project name" required />
+            </label>
+            <label class="form-field">
+              <span>Deliverable Type</span>
+              <select name="deliverable">
+                <option>WIP Render</option>
+                <option>Final Render</option>
+                <option>Audio</option>
+                <option>Storyboard</option>
+                <option>Source Files</option>
+              </select>
+            </label>
+            <label class="form-field">
+              <span>Version</span>
+              <input type="text" name="version" placeholder="v01, v02..." />
+            </label>
+            <label class="form-field">
+              <span>Changelog</span>
+              <input type="text" name="changelog" placeholder="Short summary of changes" />
+            </label>
+            <label class="form-field form-field--full">
+              <span>Upload Files</span>
+              <input type="file" name="files" accept=".mp4,.mov,.png,.jpg,.jpeg,.wav,.zip,.pdf" multiple />
+              <small class="form-help">You can select multiple files.</small>
+            </label>
+            <label class="form-field form-field--full">
+              <span>Notes</span>
+              <textarea name="notes" rows="3" placeholder="Any special notes for reviewers."></textarea>
+            </label>
+          </div>
+          <div class="form-actions">
+            <button class="form-button" type="submit">Upload Files</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </body>
+</html>
+
+
+
+
+
+
+
+

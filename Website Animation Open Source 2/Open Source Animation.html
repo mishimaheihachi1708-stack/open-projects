@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Open Source Command Hub</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600&family=Noto+Sans+JP:wght@400;500&display=swap");
+
+      :root {
+        --bg: #182737;
+        --panel: rgba(240, 242, 246, 0.9);
+        --panel-ink: #253342;
+        --ink: #f1f4f8;
+        --ink-dark: #0b0e12;
+        --accent: #a7bed6;
+        --wire: rgba(225, 233, 244, 0.75);
+        --wire-strong: rgba(255, 255, 255, 0.9);
+        --shadow: 0 18px 45px rgba(2, 6, 12, 0.45);
+        --bg-image: none;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at 20% 20%, #2a3d52 0, transparent 50%),
+          radial-gradient(circle at 80% 10%, #0f1b2a 0, transparent 45%),
+          linear-gradient(140deg, #0c141f 0%, var(--bg) 60%, #2a3d52 100%);
+        font-family: "Noto Sans JP", system-ui, sans-serif;
+        color: var(--ink);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 48px;
+        padding: 36px 0 96px;
+      }
+
+      .stage {
+        width: min(960px, 96vw);
+      }
+
+      .screen {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        border-radius: 16px;
+        overflow: hidden;
+        background-image: linear-gradient(130deg, #5f7c9c 0%, #9db3c8 45%, #d1deea 100%),
+          radial-gradient(circle at 35% 40%, rgba(18, 31, 48, 0.35), transparent 55%),
+          radial-gradient(circle at 70% 35%, rgba(220, 231, 243, 0.8), transparent 55%),
+          var(--bg-image);
+        background-size: cover;
+        box-shadow: var(--shadow);
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        isolation: isolate;
+      }
+
+      .screen::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, rgba(9, 16, 24, 0.55), rgba(255, 255, 255, 0.05));
+        mix-blend-mode: multiply;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      .screen::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: repeating-linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.05),
+          rgba(255, 255, 255, 0.05) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+        opacity: 0.4;
+        pointer-events: none;
+        z-index: 4;
+      }
+
+      .portrait {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 65% 55%, rgba(245, 248, 252, 0.7) 0 20%, transparent 22%),
+          radial-gradient(circle at 60% 55%, rgba(170, 200, 230, 0.6) 0 35%, transparent 38%),
+          radial-gradient(circle at 75% 50%, rgba(20, 35, 55, 0.4) 0 35%, transparent 50%),
+          linear-gradient(120deg, rgba(20, 50, 80, 0.75) 0%, rgba(82, 120, 160, 0.55) 48%, rgba(210, 225, 240, 0.35) 68%, rgba(240, 245, 250, 0.1) 100%);
+        opacity: 0.9;
+        mix-blend-mode: screen;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .portrait::before {
+        content: "";
+        position: absolute;
+        inset: -10% auto -10% -5%;
+        width: 62%;
+        background: linear-gradient(130deg, rgba(12, 30, 50, 0.95), rgba(45, 85, 130, 0.7) 55%, transparent 80%);
+        clip-path: polygon(0 0, 100% 8%, 92% 45%, 100% 92%, 0 100%);
+        opacity: 0.9;
+      }
+
+      .portrait::after {
+        content: "";
+        position: absolute;
+        width: min(26vw, 170px);
+        height: min(26vw, 170px);
+        left: 56%;
+        top: 42%;
+        border-radius: 50%;
+        border: 3px solid rgba(10, 18, 28, 0.55);
+        background: radial-gradient(circle at 35% 35%, #f8fbff 0 18%, rgba(150, 180, 210, 0.9) 33%, rgba(60, 90, 130, 0.9) 55%, rgba(10, 18, 28, 0.95) 72%);
+        box-shadow: inset 0 0 20px rgba(8, 14, 22, 0.6);
+        opacity: 0.65;
+      }
+
+      .menu-btn {
+        position: absolute;
+        top: var(--y);
+        left: var(--x);
+        transform: translate(-50%, -50%);
+        padding: 6px 22px 7px;
+        font-family: "Orbitron", sans-serif;
+        font-size: clamp(0.68rem, 1.4vw, 0.85rem);
+        letter-spacing: 1px;
+        color: var(--ink);
+        background: rgba(5, 8, 12, 0.92);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        text-transform: uppercase;
+        box-shadow: 0 8px 20px rgba(4, 9, 18, 0.5);
+        display: inline-flex;
+        flex-direction: column;
+        gap: 2px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        animation: float 3.8s ease-in-out infinite;
+        animation-delay: var(--delay, 0s);
+        z-index: 3;
+      }
+
+      .menu-btn:hover {
+        box-shadow: 0 12px 26px rgba(4, 9, 18, 0.7);
+        border-color: rgba(255, 255, 255, 0.55);
+      }
+
+      .menu-btn:focus-visible {
+        outline: 2px solid var(--wire-strong);
+        outline-offset: 3px;
+      }
+
+      .menu-btn.light {
+        background: rgba(245, 247, 250, 0.92);
+        color: #2a313c;
+        border: 1px solid rgba(35, 45, 57, 0.3);
+      }
+
+      .menu-btn .sub {
+        display: block;
+        font-family: "Noto Sans JP", sans-serif;
+        font-size: 0.62rem;
+        letter-spacing: 0.4px;
+        text-transform: none;
+        opacity: 0.9;
+      }
+
+      .panel {
+        position: absolute;
+        background: var(--panel);
+        color: var(--panel-ink);
+        border: 1px solid rgba(27, 39, 52, 0.2);
+        border-radius: 4px;
+        padding: 8px 12px;
+        font-size: 0.8rem;
+        box-shadow: 0 10px 24px rgba(10, 14, 20, 0.25);
+        z-index: 5;
+      }
+
+      .panel.command {
+        top: 18px;
+        left: 18px;
+        width: 190px;
+        font-family: "Orbitron", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+      }
+
+      .panel.command span {
+        display: block;
+        font-family: "Noto Sans JP", sans-serif;
+        text-transform: none;
+        letter-spacing: 0.2px;
+        margin-top: 4px;
+        font-size: 0.75rem;
+      }
+
+      .panel.corner {
+        top: 18px;
+        right: 18px;
+        width: 155px;
+        font-size: 0.75rem;
+      }
+
+      .panel.bottom-left {
+        bottom: 18px;
+        left: 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.75rem;
+      }
+
+      .panel.bottom-right {
+        bottom: 18px;
+        right: 18px;
+        width: 110px;
+        text-align: right;
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.8rem;
+      }
+
+      .panel.bottom-right strong {
+        display: block;
+        font-size: 1.2rem;
+      }
+
+      .wires {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      .wire {
+        stroke: var(--wire);
+        stroke-width: 2;
+      }
+
+      .wire.strong {
+        stroke: var(--wire-strong);
+        stroke-width: 2.6;
+      }
+
+      .node {
+        fill: rgba(255, 255, 255, 0.85);
+        stroke: rgba(10, 18, 28, 0.6);
+        stroke-width: 1.5;
+      }
+
+      .content-section {
+        width: min(960px, 96vw);
+        background: rgba(10, 16, 24, 0.75);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 14px;
+        padding: 24px 26px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(6px);
+        scroll-margin-top: 24px;
+      }
+
+      .content-section h2 {
+        margin: 0 0 10px;
+        font-family: "Orbitron", sans-serif;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        font-size: 1.1rem;
+      }
+
+      .content-section p {
+        margin: 0 0 18px;
+        color: rgba(241, 244, 248, 0.8);
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+      }
+
+      .content-card {
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: inset 0 0 12px rgba(7, 12, 18, 0.2);
+      }
+
+      .content-card span {
+        display: block;
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.68rem;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 6px;
+      }
+
+      .content-card small {
+        color: rgba(241, 244, 248, 0.7);
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(-50%, -50%) translateY(-2px);
+        }
+        50% {
+          transform: translate(-50%, -50%) translateY(6px);
+        }
+      }
+
+      @media (max-width: 720px) {
+        .panel.command,
+        .panel.corner {
+          transform: scale(0.9);
+        }
+
+        .menu-btn {
+          font-size: 0.62rem;
+          padding: 6px 14px;
+        }
+
+        .content-section {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body class="home">
+    <div class="page">
+      <main class="stage" id="home">
+        <div class="screen">
+          <div class="portrait" aria-hidden="true"></div>
+          <svg class="wires" viewBox="0 0 1000 560" preserveAspectRatio="none" aria-hidden="true">
+            <line class="wire" x1="140" y1="86" x2="360" y2="150" />
+            <line class="wire" x1="360" y1="150" x2="560" y2="230" />
+            <line class="wire" x1="160" y1="300" x2="380" y2="260" />
+            <line class="wire" x1="380" y1="260" x2="560" y2="230" />
+            <line class="wire" x1="560" y1="230" x2="740" y2="210" />
+            <line class="wire" x1="560" y1="230" x2="780" y2="300" />
+            <line class="wire" x1="560" y1="230" x2="700" y2="360" />
+            <line class="wire strong" x1="310" y1="370" x2="560" y2="230" />
+            <circle class="node" cx="140" cy="86" r="6" />
+            <circle class="node" cx="360" cy="150" r="6" />
+            <circle class="node" cx="560" cy="230" r="7" />
+            <circle class="node" cx="380" cy="260" r="6" />
+            <circle class="node" cx="740" cy="210" r="6" />
+            <circle class="node" cx="780" cy="300" r="6" />
+            <circle class="node" cx="700" cy="360" r="6" />
+            <circle class="node" cx="310" cy="370" r="6" />
+          </svg>
+
+          <div class="panel command">
+            COMMAND
+            <span>ペルソナの変更 / 確認</span>
+          </div>
+          <div class="panel corner">
+            どのペルソナに<br />
+            切り替えますか？
+          </div>
+          <div class="panel bottom-left">◀ 戻る ● 決定</div>
+          <div class="panel bottom-right">
+            <strong>&yen; 999,9</strong>
+            M
+          </div>
+
+          <a class="menu-btn" href="#projects" style="--x: 58%; --y: 12%; --delay: 0s">
+            ITEM
+            <span class="sub">Projects</span>
+          </a>
+          <a class="menu-btn" href="#apply" style="--x: 38%; --y: 20%; --delay: 0.3s">
+            SKILL
+            <span class="sub">Apply</span>
+          </a>
+          <a class="menu-btn" href="#upload" style="--x: 78%; --y: 20%; --delay: 0.7s">
+            EQUIP
+            <span class="sub">Upload</span>
+          </a>
+          <a class="menu-btn" href="#forum" style="--x: 32%; --y: 33%; --delay: 0.5s">
+            PERSONA
+            <span class="sub">Forum</span>
+          </a>
+          <a class="menu-btn" href="#account" style="--x: 78%; --y: 35%; --delay: 0.1s">
+            STATUS
+            <span class="sub">Account</span>
+          </a>
+          <a class="menu-btn light" href="#community" style="--x: 40%; --y: 52%; --delay: 0.6s">
+            COMMUNITY
+            <span class="sub">コミュニティー</span>
+          </a>
+          <a class="menu-btn" href="#requests" style="--x: 78%; --y: 50%; --delay: 0.9s">
+            REQUEST
+            <span class="sub">Requests</span>
+          </a>
+          <a class="menu-btn" href="#tutorials" style="--x: 52%; --y: 63%; --delay: 0.2s">
+            CALENDAR
+            <span class="sub">Tutorials</span>
+          </a>
+          <a class="menu-btn" href="#system" style="--x: 66%; --y: 63%; --delay: 0.4s">
+            SYSTEM
+            <span class="sub">Settings</span>
+          </a>
+        </div>
+      </main>
+
+      <section id="projects" class="content-section">
+        <h2>Projects</h2>
+        <p>Browse open animation initiatives and jump into the current sprint board.</p>
+        <div class="content-grid">
+          <div class="content-card">
+            <span>Solar Flare</span>
+            <small>Intro sequence with motion + lighting roles.</small>
+          </div>
+          <div class="content-card">
+            <span>Atlas UI Kit</span>
+            <small>Motion system templates for open apps.</small>
+          </div>
+          <div class="content-card">
+            <span>Coastal Myth</span>
+            <small>Storyboards + animatic timings.</small>
+          </div>
+        </div>
+      </section>
+
+      <section id="apply" class="content-section">
+        <h2>Apply</h2>
+        <p>Send a quick pitch and portfolio to open roles.</p>
+        <div class="content-grid">
+          <div class="content-card">
+            <span>Role Select</span>
+            <small>Pick a project and choose a contribution lane.</small>
+          </div>
+          <div class="content-card">
+            <span>Availability</span>
+            <small>Share your weekly capacity and tools.</small>
+          </div>
+          <div class="content-card">
+            <span>Response</span>
+            <small>Track approvals and onboarding steps.</small>
+          </div>
+        </div>
+      </section>
+
+      <section id="upload" class="content-section">
+        <h2>Upload</h2>
+        <p>Submit WIP renders, audio, and final deliverables.</p>
+        <div class="content-grid">
+          <div class="content-card">
+            <span>File Drop</span>
+            <small>MP4, MOV, PNG seq, WAV, ZIP.</small>
+          </div>
+          <div class="content-card">
+            <span>Versions</span>
+            <small>Tag revisions with a short changelog.</small>
+          </div>
+          <div class="content-card">
+            <span>Review</span>
+            <small>Queue deliverables for feedback.</small>
+          </div>
+        </div>
+      </section>
+
+      <section id="forum" class="content-section">
+        <h2>Forum</h2>
+        <p>Coordinate feedback, critiques, and open tasks.</p>
+        <div class="content-grid">
+          <div class="content-card">
+            <span>Critique Room</span>
+            <small>Weekly feedback threads.</small>
+          </div>
+          <div class="content-card">
+            <span>Pipeline Tips</span>
+            <small>Render pipeline documentation.</small>
+          </div>
+          <div class="content-card">
+            <span>Help Ddbdc5016e5d4a16bbe199260889d1154.jpgesk</span>
+            <small>Ask for blockers and support.</small>
+          </div>
+        </div>
+      </section>
+
+      <section id="community" class="content-section">
+        <h2>Community</h2>
+        <p>Connect with contributors and partner studios.</p>
+        <div class="content-grid">
+          <div class="content-card">
+            <span>Mentors</span>
+            <small>Peer reviews and coaching.</small>
+          </div>
+          <div class="content-card">
+            <span>Collabs</span>
+            <small>Find collaborators by discipline.</small>
+          </div>
+          <div class="content-card">
+            <span>Events</span>
+            <small>Live jams and studio meetups.</small>
+          </div>
+        </div>
+      </section>
+
+      <section id="requests" class="content-section">
+        <h2>Requests</h2>
+        <p>See open needs from project leads and contributors.</p>
+        <div class="content-grid">
+          <div class="content-card">
+            <span>Motion Help</span>
+            <small>UI + motion assets.</small>
+          </div>
+          <div class="content-card">
+            <span>Sound Pack</span>
+            <small>Ambient loops and foley.</small>
+          </div>
+          <div class="content-card">
+            <span>QA Review</span>
+            <small>Render checks for final delivery.</small>
+          </div>
+        </div>
+      </section>
+
+      <section id="tutorials" class="content-section">
+        <h2>Tutorials</h2>
+        <p>Watch workflow tutorials and shared tool breakdowns.</p>
+        <div class="content-grid">
+          <div class="content-card">
+            <span>Motion 101</span>
+            <small>Reusable animation presets.</small>
+          </div>
+          <div class="content-card">
+            <span>Open Pipeline</span>
+            <small>Remote review cycles.</small>
+          </div>
+          <div class="content-card">
+            <span>Sound Design</span>
+            <small>Layered ambience builds.</small>
+          </div>
+        </div>
+      </section>
+
+      <section id="account" class="content-section">
+        <h2>Account</h2>
+        <p>Create an account or log in to track your activity.</p>
+        <div class="content-grid">
+          <div class="content-card">
+            <span>Profile</span>
+            <small>Portfolio links and tools.</small>
+          </div>
+          <div class="content-card">
+            <span>Notifications</span>
+            <small>Stay on top of replies.</small>
+          </div>
+          <div class="content-card">
+            <span>History</span>
+            <small>Uploads and approvals.</small>
+          </div>
+        </div>
+      </section>
+
+      <section id="system" class="content-section">
+        <h2>System</h2>
+        <p>Manage your workspace preferences and integration settings.</p>
+        <div class="content-grid">
+          <div class="content-card">
+            <span>Preferences</span>
+            <small>Theme and accessibility.</small>
+          </div>
+          <div class="content-card">
+            <span>Integrations</span>
+            <small>Connect storage providers.</small>
+          </div>
+          <div class="content-card">
+            <span>Security</span>
+            <small>Two-factor authentication.</small>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
